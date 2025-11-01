@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HP Luxurious Plants</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #2E8B57;
+            background-color: #F5F5DC;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(46, 139, 87, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        nav.scrolled {
+            background: rgba(46, 139, 87, 1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        nav h1 {
+            color: #FFD700;
+            font-size: 2rem;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+        nav ul li {
+            margin-left: 30px;
+        }
+        nav ul li a {
+            color: #FFD700;
+            font-weight: 400;
+            transition: color 0.3s ease;
+        }
+        nav ul li a:hover {
+            color: #F5F5DC;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #FFD700;
+            overflow: hidden;
+        }
+        .hero video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        .hero .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(46, 139, 87, 0.5);
+            z-index: -1;
+        }
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+        .hero p {
+            font-size: 1.5rem;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Products Section */
+        .products {
+            padding: 100px 0;
+            background: linear-gradient(to bottom, #F5F5DC, #E6E6FA);
+        }
+        .products h2 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 50px;
+            color: #2E8B57;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .product {
+            background: #FFF;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .product img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .product-info {
+            padding: 20px;
+            text-align: center;
+        }
+        .product h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .product p {
+            font-size: 1.2rem;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background: linear-gradient(45deg, #2E8B57, #FFD700);
+            color: #FFF;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 400;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #FFF;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 100px 0;
+            background: #2E8B57;
+            color: #FFD700;
+        }
+        .testimonials h2 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 50px;
+        }
+        .testimonial-carousel {
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+        .testimonial {
+            min-width: 100%;
+            text-align: center;
+            padding: 0 20px;
+            transition: transform 0.5s ease;
+        }
+        .testimonial img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+        .testimonial p {
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+        .carousel-dots {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #FFD700;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            opacity: 0.5;
+        }
+        .dot.active {
+            opacity: 1;
+        }
+
+        /* Footer */
+        footer {
+            background: #1C1C1C;
+            color: #FFD700;
+            padding: 50px 0;
+            text-align: center;
+        }
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        footer p {
+            margin-bottom: 20px;
+        }
+        footer .social-icons {
+            display: flex;
+            justify-content: center;
+        }
+        footer .social-icons a {
+            margin: 0 10px;
+            font-size: 2rem;
+            transition: transform 0.3s ease;
+        }
+        footer .social-icons a:hover {
+            transform: scale(1.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.2rem;
+            }
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            footer .container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="container">
+            <h1>HP Luxurious Plants</h1>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#products">Plants</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="hero" class="hero">
+        <video autoplay muted loop>
+            <source src="https://example.com/luxury-plants-video.mp4" type="video/mp4">
+            <!-- Fallback: Use a static image or animated background -->
+        </video>
+        <div class="overlay"></div>
+        <div class="container">
+            <h1>Welcome to HP Luxurious Plants</h1>
+            <p>Discover the elegance of nature in your home.</p>
+        </div>
+    </section>
+
+    <section id="products" class="products">
+        <div class="container">
+            <h2>Our Luxurious Plants</h2>
+            <div class="product-grid">
+                <div class="product">
+                    <img src="https://via.placeholder.com/300x250/2E8B57/FFD700?text=Plant+1" alt="Plant 1">
+                    <div class="product-info">
+                        <h3>Elegant Orchid</h3>
+                        <p>$49.99</p>
+                        <button class="btn" onclick="openModal('Elegant Orchid')">Buy Now</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/300x250/2E8B57/FFD700?text=Plant+2" alt="Plant 2">
+                    <div class="product-info">
+                        <h3>Royal Fern</h3>
+                        <p>$39.99</p>
+                        <button class="btn" onclick="openModal('Royal Fern')">Buy Now</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/300x250/2E8B57/FFD700?text=Plant+3" alt="Plant 3">
+                    <div class="product-info">
+                        <h3>Golden Palm</h3>
+                        <p>$59.99</p>
+                        <button class="btn" onclick="openModal('Golden Palm')">Buy Now</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/300x250/2E8B57/FFD700?text=Plant+4" alt="Plant 4">
+                    <div class="product-info">
+                        <h3>Luxury Cactus</h3>
+                        <p>$29.99</p>
+                        <button class="btn" onclick="openModal('Luxury Cactus')">Buy Now</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/300x250/2E8B57/FFD700?text=Plant+5" alt="Plant 5">
+                    <div class="product-info">
+                        <h3>Imperial Ivy</h3>
+                        <p>$34.99</p>
+                        <button class="btn" onclick="openModal('Imperial Ivy')">Buy Now</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/300x250/2E8B57/FFD700?text=Plant+6" alt="Plant 6">
+                    <div class="product-info">
+                        <h3>Regal Rose</h3>
+                        <p>$44.99</p>
+                        <button class="btn" onclick="openModal('Regal Rose')">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title">Plant Name</h2>
+            <p>Thank you for your interest! This plant will be added to your cart.</p>
+        </div>
+    </div>
+
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2>What Our Customers Say</h2>
+            <div class="testimonial-carousel" id="carousel">
+                <div class="testimonial">
+                    <img src="https://via.placeholder.com/100x100/FFD700/2E8B57?text=Customer+1" alt="Customer 1">
+                    <p>"These plants transformed my home into a paradise!"</p>
+                </div>
+                <div class="testimonial">
+                    <img src="https://via.placeholder.com/100x100/FFD700/2E8B57?text=Customer+2" alt="Customer 2">
+                    <p>"Luxurious quality and stunning beauty."</p>
+                </div>
+                <div class="testimonial">
+                    <img src="https://via.placeholder.com/100x100/FFD700/2E8B57?text=Customer+3" alt="Customer 3">
+                    <p>"Highly recommend for any plant lover."</p>
+                </div>
+            </div>
+            <div class="carousel-dots">
+                <span class="dot active" onclick="showSlide(0)"></span>
+                <span class="dot" onclick="showSlide(1)"></span>
+                <span class="dot" onclick="showSlide(2)"></span>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div>
+                <p>Contact Us: info@hpluxuriousplants.com | +1 (123) 456-7890</p>
+            </div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sticky Nav
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Modal
+        function openModal(plantName) {
+            document.getElementById('modal-title').textContent = plantName;
+            document.getElementById('modal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Carousel
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.testimonial');
+        const dots = document.querySelectorAll('.dot');
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.style.transform = `translateX(${100 * (i - index)}%)`;
+            });
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
+            currentSlide = index;
+        }
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }, 5000);
+    </script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script> <!-- For social icons -->
+</body>
+</html>
